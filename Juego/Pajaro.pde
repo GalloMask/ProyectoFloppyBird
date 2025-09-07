@@ -1,22 +1,34 @@
 class Pajaro{
   private PVector posicion;
-  private int velocidad;
-  private int gravedad;
-  private PImage spriteAve;
+  private float velocidad;
+  private float fuerzaSalto;
+  //private PImage spriteAve;
   
-  Pajaro(PVector posicion, int velocidad, int gravedad){
+  Pajaro(PVector posicion, float velocidad){
     this.posicion = posicion;
     this.velocidad = velocidad;
-    this.gravedad = gravedad;
+    this.fuerzaSalto= 5;
     
   }
   
   void dibujar(){
+    fill(#C9FFD2);
+    circle(this.posicion.x, this.posicion.y, 40);
+  }
+  
+  void aplicarGravedad(float gravedad){
+    this.velocidad += gravedad;
   }
   
   void mover(){
+    this.posicion.x+= velocidad;
+    
   }
   
-  boolean chocaCon(){
+  void saltar(){
+    this.velocidad = -fuerzaSalto;
   }
+  
+  //boolean chocaCon(){
+  //}
 }
