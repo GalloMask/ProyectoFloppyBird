@@ -10,7 +10,7 @@ private boolean salta;
 
 void setup(){
   size(700, 500);
-  ave = new Pajaro(new PVector(10, height/2),5);
+  ave = new Pajaro(new PVector(18, height/2), new PVector(5,0));
   //poste = new ArrayList<Poste>();
 }
 
