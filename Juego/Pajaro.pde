@@ -35,7 +35,7 @@ class Pajaro{
   }
   //metodo para que salte
   void saltar(){
-    this.posicion.y -= fuerzaSalto;s
+    this.posicion.y -= fuerzaSalto;
   }
   
   //boolean chocaCon(){
