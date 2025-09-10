@@ -5,15 +5,15 @@ class MaquinaDeEstado {
 
 private Pajaro ave;
 private boolean salta;
-private ArrayList<Poste> poste;
-//private PImage fondo;
+private ArrayList<Poste> postes;
+private int ultimoPosteX = 0;
 
 void setup(){
   
-  size(700, 500);
+  size(500, 600);
   ave = new Pajaro(new PVector(18, height/2), new PVector(5,0));
-  poste = new ArrayList<Poste>();
-  generarPostes(13);
+  postes = new ArrayList<Poste>();
+  generarPostes();
 }
 
 void draw(){
@@ -22,8 +22,9 @@ void draw(){
   ave.mover();
   if(salta) ave.saltar();
   
-  for(Poste p: poste){
+  for(Poste p: postes){
     p.dibujar();
+    p.mover();
   }
 }
 
@@ -35,26 +36,21 @@ void keyReleased(){
     if(keyCode == ' ')salta = false;
 }
 
-void generarPostes(int cantidad){
-  for(int i = 1; i < cantidad; i++){
-    float x = random(10, 700);
-    float y = random(50, height - 100);
-    float tamanio = random(48);
-    boolean posicionValida = true;
+void generarPostes(){
     
-     for (Poste p : poste) {
-        if (abs(p.getPosicion().x - x) < 100 && abs(p.getPosicion().y - y) < 50) {
-          posicionValida = false;
-          break;
-        }
-      }
-
-      if (posicionValida) {
-        poste.add(new Poste(new PVector(x, y),5, tamanio));
-      } else {
-        i--; 
-      }
-    }
-    
-    poste.add(new Poste(new PVector(2/width, 400),5, 40));
+   // Calcular posición X (después del último poste)
+  float x = ultimoPosteX + random(180, 220); // Distancia aleatoria entre postes
+  
+  // Generar alturas aleatorias
+  float alturaSuperior = random(100, 250);
+  float espacio = random(120, 180); // Espacio para que pase el pájaro
+  float alturaInferior = height - alturaSuperior - espacio;
+  
+  // Crear poste superior
+  postes.add(new Poste(new PVector(x, 0), 5, alturaSuperior, true));
+  
+  // Crear poste inferior
+  postes.add(new Poste(new PVector(x, height - alturaInferior), 5, alturaInferior, false));
+  
+  ultimoPosteX = (int)x; // Actualizar la posición del último poste
 }
