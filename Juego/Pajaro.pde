@@ -3,23 +3,30 @@ class Pajaro{
   private PVector velocidad;
   private float gravedad;
   private float fuerzaSalto;
+  private float collider;
+  private boolean chocado;
   
   Pajaro(PVector posicion, PVector velocidad){
     this.posicion = posicion;
     this.velocidad = velocidad;
     this.fuerzaSalto= 8;
     this.gravedad = 0.1;
+    this.collider = 25;
+    this.chocado = false;
     
   }
   
   void dibujar(){
+    if(!chocado){
     fill(#C9FFD2);
-    circle(this.posicion.x, this.posicion.y, 40);
+    circle(this.posicion.x, this.posicion.y, this.collider * 2);
+    }
   }
   
   void mover(){
     
-    //aplicamos gravedad
+    if(!chocado){
+      //aplicamos gravedad
     this.posicion.y += velocidad.y;
     this.velocidad.y += gravedad;
     
@@ -30,16 +37,22 @@ class Pajaro{
     //para evitar que se salga por abajo
     if(this.posicion.y > height -20){
       this.posicion.y = height -20;
+     }
     }
-    
+
   }
   //metodo para que salte
   void saltar(){
     this.posicion.y -= fuerzaSalto;
   }
   
-  //boolean chocaCon(){
-  //}
+  void chocar(){
+    this.chocado = true;
+  }
+  
+  boolean chocaCon(){
+    return chocado;
+  }
   
   public PVector getPosicion(){ return posicion; }
   void setPosicion(PVector posicion){ this.posicion= posicion; }
@@ -49,5 +62,8 @@ class Pajaro{
   
    public float getGravedad(){ return gravedad; }
   void setGravedad(float gravedad){ this.gravedad= gravedad; }
+  
+   public float getCollider(){ return collider; }
+  void setCollider(float collider){ this.collider= collider; }
   
 }

@@ -20,6 +20,24 @@ class Poste {
     this.posicion.x += -velocidad;
   }
   
+  boolean siColisiona(Pajaro ave){
+    float closestX = constrain(ave.getPosicion().x,
+      this.posicion.x, this.posicion.x + this.alto);
+
+    float closestY = constrain(ave.getPosicion().y,
+      this.posicion.y, this.posicion.y + this.alto);
+
+    float distX = ave.getPosicion().x - closestX;
+    float distY = ave.getPosicion().y - closestY;
+
+    float distance = sqrt(distX * distX + distY * distY);
+
+    if (distance < ave.getCollider()) {
+      return true;
+    }
+    return false;
+  }
+  
   public PVector getPosicion(){ return posicion; }
   void setPosicion(PVector posicion){ this.posicion= posicion; }
   
