@@ -56,7 +56,7 @@ void draw(){
         break; // Una vez que colisiona, no necesitamos seguir verificando
       }
     }
-    // Verificar si choca con el suelo o techo
+    // Verificar si choca con el suelo o lstecho
       if (ave.getPosicion().y >= height - 20 || ave.getPosicion().y <= 0) {
         ave.chocar();
         estado = MaquinaDeEstado.PERDISTE;
