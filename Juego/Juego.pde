@@ -6,9 +6,12 @@ class MaquinaDeEstado {
 
 private Pajaro ave;
 private boolean salta;
+
 private ArrayList<Poste> postes;
 private int ultimoPosteX = 0;
+
 private DeltaTime dt;
+private Temporizador time;
 public int estado = MaquinaDeEstado.JUGANDO;
 
 void setup(){
@@ -19,6 +22,7 @@ void setup(){
   generarPostes();
   
   dt = new DeltaTime();
+  time = new Temporizador();
 }
 
 void draw(){
@@ -41,6 +45,7 @@ void draw(){
   
   switch(estado){
     case  MaquinaDeEstado.JUGANDO: {
+      time.dibujar();
       
       if(!ave.chocaCon()){
           ave.dibujar();
