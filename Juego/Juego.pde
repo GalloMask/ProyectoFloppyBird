@@ -44,13 +44,30 @@ void draw(){
       }
       
       for (int i = 0; i < postes.size(); i++) {
-      Poste p =´postes.get(i);
-      if (p.hayColision(circulo)) {
-        circulo.explotar();
+      Poste p =postes.get(i);
+      if (p.siColisiona(ave)) {
+        ave.chocar();
+        estado = MaquinaDeEstado.PERDISTE;
         break; // Una vez que colisiona, no necesitamos seguir verificando
       }
-    } 
+    }
+    // Verificar si choca con el suelo o techo
+      if (ave.getPosicion().y >= height - 20 || ave.getPosicion().y <= 0) {
+        ave.chocar();
+        estado = MaquinaDeEstado.PERDISTE;
+      }
+   break;
   }
+  case MaquinaDeEstado.GANASTE: {
+    break;
+  }
+  case MaquinaDeEstado.PERDISTE: {
+     fill(255, 0, 0);
+      textSize(32);
+      text("PERDISTE", width/2 - 80, height/2);
+    break;
+  }
+ }
 }
 
 void keyPressed(){

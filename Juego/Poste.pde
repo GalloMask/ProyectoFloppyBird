@@ -22,7 +22,7 @@ class Poste {
   
   boolean siColisiona(Pajaro ave){
     float closestX = constrain(ave.getPosicion().x,
-      this.posicion.x, this.posicion.x + this.alto);
+      this.posicion.x, this.posicion.x + 50);
 
     float closestY = constrain(ave.getPosicion().y,
       this.posicion.y, this.posicion.y + this.alto);
