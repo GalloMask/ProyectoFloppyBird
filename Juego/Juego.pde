@@ -8,24 +8,29 @@ private Pajaro ave;
 private boolean salta;
 private ArrayList<Poste> postes;
 private int ultimoPosteX = 0;
+private DeltaTime dt;
 public int estado = MaquinaDeEstado.JUGANDO;
 
 void setup(){
   
   size(500, 600);
-  ave = new Pajaro(new PVector(18, height/2), new PVector(2.4,0));
+  ave = new Pajaro(new PVector(18, height/2), new PVector(5, 0));
   postes = new ArrayList<Poste>();
   generarPostes();
+  
+  dt = new DeltaTime();
 }
 
 void draw(){
   background(#C9F6FF);
+  dt.actualizar();
+  float deltaTime = dt.getDeltaTime();
 
    // Dibujar y mover postes
   for(int i = postes.size() - 1; i >= 0; i--){
     Poste p = postes.get(i);
     p.dibujar();
-    p.mover();
+    p.mover(deltaTime);
     
     // Si el poste sale de la pantalla
     if(p.getPosicion().x + 50 < 0){
@@ -39,8 +44,8 @@ void draw(){
       
       if(!ave.chocaCon()){
           ave.dibujar();
-          ave.mover();
-          if(salta) ave.saltar();
+          ave.mover(deltaTime);
+          if(salta) ave.saltar(deltaTime);
       }
       
       for (int i = 0; i < postes.size(); i++) {
@@ -81,7 +86,7 @@ void keyReleased(){
 void generarPostes(){
     
    // Calcular posición X (después del último poste)
-  float x = ultimoPosteX + random(280, 220); // Distancia aleatoria entre postes
+  float x = ultimoPosteX + random(180, 220); // Distancia aleatoria entre postes
   
   // Generar alturas aleatorias
   float alturaSuperior = random(100, 250);
@@ -89,10 +94,10 @@ void generarPostes(){
   float alturaInferior = height - alturaSuperior - espacio;
   
   // Crear poste superior
-  postes.add(new Poste(new PVector(x, 0), 2, alturaSuperior, true));
+  postes.add(new Poste(new PVector(x, 0), 100, alturaSuperior, true));
   
   // Crear poste inferior
-  postes.add(new Poste(new PVector(x, height - alturaInferior), 2, alturaInferior, false));
+  postes.add(new Poste(new PVector(x, height - alturaInferior), 100, alturaInferior, false));
   
   ultimoPosteX = (int)x; // Actualizar la posición del último poste
 }

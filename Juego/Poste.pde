@@ -16,8 +16,8 @@ class Poste {
     rect(this.posicion.x, this.posicion.y, 50, this.alto);
   }
   
-  void mover(){
-    this.posicion.x += -velocidad;
+  void mover( float dt){
+    this.posicion.x += -velocidad * dt;
   }
   
   boolean siColisiona(Pajaro ave){
