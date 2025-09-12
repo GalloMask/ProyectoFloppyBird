@@ -2,17 +2,25 @@ class Temporizador{
   private int tiempo = 30;
   private int tiempoRest;
   private int tiempoInicial;
-  private boolean completado = false;
+  private boolean juegoTerminado = false;
   
   Temporizador(){
     tiempoInicial = millis();
     tiempoRest = tiempo;
-    completado = false;
   }
   
   void actTiempo(){
+    
+    if(estado !=  MaquinaDeEstado.JUGANDO) return ;
+    
     int tiempoTranscurrido = (millis() - tiempoInicial) / 1000;
     tiempoRest = max(0, tiempo - tiempoTranscurrido);
+    
+    if( tiempoRest == 0 && estado == MaquinaDeEstado.JUGANDO){
+      estado = MaquinaDeEstado.GANASTE;
+      juegoTerminado = true;
+    }  
+    
   }
   
   void dibujar(){
@@ -20,4 +28,6 @@ class Temporizador{
       textSize(24);
       text("Tiempo: " + tiempoRest + "s", 20, 60);
   }
+  
+  int getTiempoTrans(){ return tiempo - tiempoRest; }
 }

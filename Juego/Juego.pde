@@ -12,6 +12,7 @@ private int ultimoPosteX = 0;
 
 private DeltaTime dt;
 private Temporizador time;
+
 public int estado = MaquinaDeEstado.JUGANDO;
 
 void setup(){
@@ -27,8 +28,12 @@ void setup(){
 
 void draw(){
   background(#C9F6FF);
+  
   dt.actualizar();
   float deltaTime = dt.getDeltaTime();
+  
+  float velocidadBase = 100 + (time.getTiempoTrans() * 10);
+  aplicarVPostes(velocidadBase);
 
    // Dibujar y mover postes
   for(int i = postes.size() - 1; i >= 0; i--){
@@ -38,13 +43,14 @@ void draw(){
     
     // Si el poste sale de la pantalla
     if(p.getPosicion().x + 50 < 0){
-      postes.remove(i); // Eliminar el poste
-      generarPostes(); // Crear uno nuevo
+      postes.remove(i); // Elimina el poste
+      generarPostes(); // Crea uno nuevo
     }
   }
   
   switch(estado){
     case  MaquinaDeEstado.JUGANDO: {
+      time.actTiempo();
       time.dibujar();
       
       if(!ave.chocaCon()){
@@ -69,6 +75,9 @@ void draw(){
    break;
   }
   case MaquinaDeEstado.GANASTE: {
+      fill(255, 0, 0);
+      textSize(32);
+      text("GANASTE", width/2 - 80, height/2);
     break;
   }
   case MaquinaDeEstado.PERDISTE: {
@@ -88,21 +97,27 @@ void keyReleased(){
     if(keyCode == ' ')salta = false;
 }
 
+void aplicarVPostes(float nuevaVelocidad) {
+  for (Poste p : postes) {
+    p.setVelocidad(nuevaVelocidad);
+  }
+}
+
 void generarPostes(){
     
    // Calcular posición X (después del último poste)
   float x = ultimoPosteX + random(180, 220); // Distancia aleatoria entre postes
-  
   // Generar alturas aleatorias
   float alturaSuperior = random(100, 250);
   float espacio = random(120, 180); // Espacio para que pase el pájaro
   float alturaInferior = height - alturaSuperior - espacio;
   
-  // Crear poste superior
-  postes.add(new Poste(new PVector(x, 0), 100, alturaSuperior, true));
+  float velocidadActual = 100 + (time.getTiempoTrans() * 10);
+  // Crea poste superior
+  postes.add(new Poste(new PVector(x, 0), velocidadActual, alturaSuperior, true));
   
-  // Crear poste inferior
-  postes.add(new Poste(new PVector(x, height - alturaInferior), 100, alturaInferior, false));
+  // Crea poste inferior
+  postes.add(new Poste(new PVector(x, height - alturaInferior), velocidadActual, alturaInferior, false));
   
   ultimoPosteX = (int)x; // Actualizar la posición del último poste
 }
