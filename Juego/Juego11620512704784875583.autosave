@@ -1,4 +1,4 @@
-class MaquinaDeEstado {
+ class MaquinaDeEstado {
   public static final int JUGANDO = 1;
   public static final int GANASTE = 2;
   public static final int PERDISTE =3;
@@ -20,12 +20,11 @@ void setup(){
   size(500, 600);
   ave = new Pajaro(new PVector(18, height/2), new PVector(5, 0));
   postes = new ArrayList<Poste>();
-
-  time = new Temporizador();
+  
   dt = new DeltaTime();
+  time = new Temporizador();
   
-  generarPostes();
-  
+    generarPostes();
 }
 
 void draw(){
@@ -55,57 +54,46 @@ void draw(){
       time.actTiempo();
       time.dibujar();
       
-      // Actualizar el pájaro con deltaTime
-      ave.actualizar(deltaTime);
-      
       if(!ave.chocaCon()){
           ave.dibujar();
-          // El movimiento ahora se hace en actualizar()
-          if(salta) {
-            ave.saltar(deltaTime);
-          }
+          ave.mover(deltaTime);
+          if(salta) ave.saltar(deltaTime);
       }
       
       for (int i = 0; i < postes.size(); i++) {
-        Poste p = postes.get(i);
-        if (p.siColisiona(ave)) {
-          ave.chocar();
-          estado = MaquinaDeEstado.PERDISTE;
-          break;
-        }
+      Poste p =postes.get(i);
+      if (p.siColisiona(ave)) {
+        ave.chocar();
+        estado = MaquinaDeEstado.PERDISTE;
+        break; // Una vez que colisiona, no necesitamos seguir verificando
       }
-      
-      // Verificar si choca con el suelo o techo
-      if (ave.getPosicion().y >= height - 20 - ave.getCollider() || 
-          ave.getPosicion().y <= ave.getCollider()) {
-        if (!ave.chocaCon()) { // Solo chocar si no estaba ya chocado
-          ave.chocar();
-          estado = MaquinaDeEstado.PERDISTE;
-        }
+    }
+    // Verificar si choca con el suelo o lstecho
+      if (ave.getPosicion().y >= height - 20 || ave.getPosicion().y <= 0) {
+        ave.chocar();
+        estado = MaquinaDeEstado.PERDISTE;
       }
-      break;
-    }
-    case MaquinaDeEstado.GANASTE: {
-      fill(0, 255, 0);
-      textSize(32);
-      text("GANASTE", width/2 - 80, height/2);
-      break;
-    }
-    case MaquinaDeEstado.PERDISTE: {
+   break;
+  }
+  case MaquinaDeEstado.GANASTE: {
       fill(255, 0, 0);
       textSize(32);
-      text("PERDISTE", width/2 - 80, height/2);
-      
-      // Mostrar mensaje de reinicio
-      textSize(16);
-      text("ENTER para reiniciar", width/2 - 100, height/2 + 40);
-      break;
-    }
+      text("GANASTE", width/2 - 80, height/2);
+    break;
   }
+  case MaquinaDeEstado.PERDISTE: {
+     fill(255, 0, 0);
+      textSize(32);
+      text("PERDISTE", width/2 - 80, height/2);
+      textSize(14);
+      text("Reinicia con el ENTER", width/2 -75, height/2+30);
+      break;
+  }
+ }
 }
 
 void keyPressed(){
-  if(keyCode == ' ')salta = true;
+  if(keyCode == ' ') salta = true;
   
   if(keyCode == ENTER && estado == MaquinaDeEstado.PERDISTE){
     reiniciarJuego();
