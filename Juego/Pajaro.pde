@@ -5,6 +5,9 @@ class Pajaro{
   private float fuerzaSalto;
   private float collider;
   private boolean chocado;
+  private float ultimoSalto;
+  private float cooldownSalto;
+  private float tiempo;
   
   Pajaro(PVector posicion, PVector velocidad){
     this.posicion = posicion;
@@ -13,6 +16,9 @@ class Pajaro{
     this.gravedad = 200;
     this.collider = 25;
     this.chocado = false;
+    this.ultimoSalto = 0;
+    this.cooldownSalto = 0.1f; // 100ms entre saltos
+    this.tiempo = 0;
     
   }
   
@@ -32,22 +38,21 @@ class Pajaro{
     
     //lo movemos por el eje x
     this.posicion.x += velocidad.x * dt;
-    
-    
-    //para evitar que se salga por abajo
-    if(this.posicion.y > height -20){
-      this.posicion.y = height -20;
-     }
     }
 
+  }
+   boolean puedeSaltar() {
+    return !chocado && ((tiempo - ultimoSalto >= cooldownSalto));
   }
   //metodo para que salte
   void saltar(float dt){
     this.posicion.y -= fuerzaSalto * dt;
+    ultimoSalto = tiempo;
   }
   
   void chocar(){
     this.chocado = true;
+    this.velocidad.y = 0;
   }
   
   boolean chocaCon(){
