@@ -23,7 +23,7 @@ class Pajaro{
     this.tiempo = 0;
   }
   
-  void actualizar(float deltaTime) {
+  void actualizar(float dt) {
     tiempo += deltaTime;
     
     if(!chocado){
