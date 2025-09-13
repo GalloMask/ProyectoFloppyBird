@@ -1,4 +1,4 @@
- class MaquinaDeEstado {
+class MaquinaDeEstado {
   public static final int JUGANDO = 1;
   public static final int GANASTE = 2;
   public static final int PERDISTE =3;
@@ -20,11 +20,10 @@ void setup(){
   size(500, 600);
   ave = new Pajaro(new PVector(18, height/2), new PVector(5, 0));
   postes = new ArrayList<Poste>();
+  generarPostes();
   
   dt = new DeltaTime();
   time = new Temporizador();
-  
-    generarPostes();
 }
 
 void draw(){
@@ -91,7 +90,7 @@ void draw(){
 }
 
 void keyPressed(){
-  if(keyCode == ' ') salta = true;
+  if(keyCode == ' ')salta = true;
 }
 
 void keyReleased(){
